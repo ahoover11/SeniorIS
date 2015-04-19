@@ -6,13 +6,10 @@
 
 /**
  *
- * @author Andy
+ * @author Andy Hoover, The College of Wooster
  */
 public class RulesFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form RulesFrame
-     */
     public RulesFrame() {
         initComponents();
     }

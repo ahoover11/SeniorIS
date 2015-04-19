@@ -6,7 +6,7 @@
 
 /**
  *
- * @author Andy
+ * @author Andy Hoover, The College of Wooster
  */
 public class Main {
 
@@ -14,9 +14,6 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        //GameGUI gui = new GameGUI();
-        //gui.setVisible(true);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 PlayerSelectFrame frame = new PlayerSelectFrame();

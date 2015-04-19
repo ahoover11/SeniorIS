@@ -644,7 +644,7 @@ public class GameGUI extends javax.swing.JFrame {
     * Method to redraw a tile from the pile when the current tile has no valid placement
     ************************************************************************************/
     public void redrawTile(){
-        int totalValidTilePlacements = countValidTilePlacements();
+        int totalValidTilePlacements = countValidTilePlacements(); //Integer used to reflect the total number of valid tile placements on board for the given tile
         if(tilesRemaining != 0 && isTilePlaced == false && totalValidTilePlacements == 0){
             tilesRemaining++;
             randomTiles[randomValue] = currentTileNumber;
@@ -855,7 +855,7 @@ public class GameGUI extends javax.swing.JFrame {
                     int upperbound1 = 101; //exclusive
                     int random1 = rand1.nextInt(upperbound1 - lowerbound1) + lowerbound1;
                     
-                    //Determine if a meeple should be placed based on a probability that is effected by the number of meeples the player has remaining
+                    //Determine if a meeple should be placed based on a probability that is affected by the number of meeples the player has remaining
                     if(playerTurn == 1){
                         if(meeplesRemainingPlayer1 == 5){
                             if(random1 % 2 == 0){
@@ -920,12 +920,13 @@ public class GameGUI extends javax.swing.JFrame {
                             int t = tile.getTileNumber(); //Current tile's tile number
                             int r = tile.getRotateValue(); //Current tile's rotation value
                             currentTileImage = tile.getImage();
-                            char description1[] = currentTileImage.getDescription().toCharArray();
+                            char description1[] = currentTileImage.getDescription().toCharArray(); //Current tile's image description
                             
                             //Temporarily place tile on board for score analysis
                             board[row][col] = new placedTile(row,col,currentTileImage,t,r);
                             scoreFeatures(row,col,true);
                             
+                            //Calculate the total tile score and store it with its tile placement
                             if(playerTurn == 1){
                                 int tilePlacementScoreDifference = tilePlacementScorePlayer1 - tilePlacementScorePlayer2;
                                 if(tilePlacementScoreDifference == 0){
@@ -1008,6 +1009,7 @@ public class GameGUI extends javax.swing.JFrame {
                     int lowerbound = 0; //inclusive
                     int upperbound = 101; //exclusive
                     int random = rand.nextInt(upperbound - lowerbound) + lowerbound;
+                    
                     //Determine if a meeple should be placed based on a probability that is affected by the number of meeples the player has remaining / tiles remaining
                     if(playerTurn == 1){
                         if(meeplesRemainingPlayer1 == 5){
@@ -1066,6 +1068,7 @@ public class GameGUI extends javax.swing.JFrame {
                                 meepleBonusRandom--;
                         }
                     }
+                    
                     //Loop over all valid tile placements and assign each a score
                     if(!validTilePlacements.isEmpty()){
                         Iterator it = validTilePlacements.iterator();
@@ -1102,7 +1105,7 @@ public class GameGUI extends javax.swing.JFrame {
                             int r = tile.getRotateValue(); //Current tile's rotation value
                             int t = tile.getTileNumber(); //Current tile's tile number
                             currentTileImage = tile.getImage();
-                            char description1[] = currentTileImage.getDescription().toCharArray();
+                            char description1[] = currentTileImage.getDescription().toCharArray(); //Current tile's image description
                             
                             //Temporarily place tile on board for score analysis
                             board[row][col] = new placedTile(row,col,currentTileImage,t,r);
@@ -1253,12 +1256,6 @@ public class GameGUI extends javax.swing.JFrame {
                     bestChoice.setScore(maxScore);
                 }
                 
-                //if(playerTurn == 1){
-                    //jTextFieldPlayer1.setText(Integer.toString(bestChoice.getScore()));
-                //}else{
-                    //jTextFieldPlayer2.setText(Integer.toString(bestChoice.getScore()));
-                //}
-                
                 //Update currentTile fields to the best tile placement attributes
                 currentTileRow = bestChoice.getTile().getXCoord();
                 currentTileColumn = bestChoice.getTile().getYCoord();
@@ -1318,7 +1315,7 @@ public class GameGUI extends javax.swing.JFrame {
         ImageIcon imageBottom = board[row+1][col].getImage(); //Image below currentTileImage
         ImageIcon imageLeft = board[row][col-1].getImage(); //Image to the left of currentTileImage
        
-        //Check topTile, rightTile, bottomTile, leftTile tile to see if blank and if so reduce blank tile count (4 blank tiles indicates illegal placement)
+        //Check topTile, rightTile, bottomTile, leftTile to see if blank and if so reduce blank tile count (4 blank tiles indicates illegal placement)
         if(imageTop != blankTile && imageTop != validPlacement1Tile && imageTop != validPlacement2Tile){
             numBlankTiles--;
         }
@@ -1483,7 +1480,9 @@ public class GameGUI extends javax.swing.JFrame {
             //Update the jTableGrid to reflect current tile
             jTableGrid.setValueAt(currentTileImage, row, col);
         }else if(check == false && testPlacement == false){
+            //Set currentTileImage to previousTileImage
             currentTileImage = previousTileImage;
+            //Update the jTableGrid to reflect current tile
             jTableGrid.setValueAt(currentTileImage, row, col);
         }else if(check == true && testPlacement == true){
             //do nothing
@@ -1833,6 +1832,8 @@ public class GameGUI extends javax.swing.JFrame {
                 if (description1[13] == '3') {
                     hasMeeple1 = true;
                 }
+                
+                //Update row
                 row = row - 1;
             }
             
@@ -1854,6 +1855,8 @@ public class GameGUI extends javax.swing.JFrame {
                 if (description2[14] == '3') {
                     hasMeeple1 = true;
                 }
+                
+                //Update column
                 col = col + 1;
             }
             
@@ -1875,6 +1878,8 @@ public class GameGUI extends javax.swing.JFrame {
                 if (description3[11] == '3') {
                     hasMeeple1 = true;
                 }
+                
+                //Update row
                 row = row + 1;
             }
             
@@ -1896,6 +1901,8 @@ public class GameGUI extends javax.swing.JFrame {
                 if (description4[12] == '3') {
                     hasMeeple1 = true;
                 }
+                
+                //Update column
                 col = col - 1;
             }else{
                 //Break out of a loop
@@ -1954,7 +1961,7 @@ public class GameGUI extends javax.swing.JFrame {
                     }
                 }
             }
-            visited[row][col] = true;
+            visited[row][col] = true; //Mark tile as visited
             currentTile = board[row][col]; //Current tile
             topTile = board[row-1][col]; //Tile above current tile
             rightTile = board[row][col+1]; //Tile to right of current tile
@@ -2020,6 +2027,8 @@ public class GameGUI extends javax.swing.JFrame {
                 if (description1[13] == '3') {
                     hasMeeple2 = true;
                 }
+                
+                //Update row
                 row = row - 1;
             }
             
@@ -2041,6 +2050,8 @@ public class GameGUI extends javax.swing.JFrame {
                 if (description2[14] == '3') {
                     hasMeeple2 = true;
                 }
+                
+                //Update column
                 col = col + 1;
             }
             
@@ -2062,6 +2073,8 @@ public class GameGUI extends javax.swing.JFrame {
                 if (description3[11] == '3') {
                     hasMeeple2 = true;
                 }
+                
+                //Update row
                 row = row + 1;
             }
             
@@ -2083,6 +2096,8 @@ public class GameGUI extends javax.swing.JFrame {
                 if (description4[12] == '3') {
                     hasMeeple2= true;
                 }
+                
+                //Update column
                 col = col - 1;
             }else{
                 //Break out of a loop
@@ -2141,7 +2156,7 @@ public class GameGUI extends javax.swing.JFrame {
                     }
                 }
             }
-            visited[row][col] = true;
+            visited[row][col] = true; //Mark tile as visited
             currentTile = board[row][col]; //Current tile
             topTile = board[row-1][col]; //Tile above current tile
             rightTile = board[row][col+1]; //Tile to right of current tile
@@ -2783,8 +2798,7 @@ public class GameGUI extends javax.swing.JFrame {
                     description = image.getDescription().toCharArray(); //Description of placed tile
                     int tileNum = storage.get(i).getTileNumber(); //Tile number of placed tile
                     int r = storage.get(i).getRotateValue(); //Rotate value of placed tile
-                    
-                    
+                                       
                     String newDescription = ""+description[0]+description[1]+description[2]+description[3]+"-0-0-"+description[9]+"-00000";
                     URL imageNew = this.getClass().getClassLoader().getResource("Images"+r+"/"+"tile"+tileNum+"-"+newDescription+".png");
                     image = new ImageIcon(imageNew);
@@ -2820,8 +2834,7 @@ public class GameGUI extends javax.swing.JFrame {
                     description = image.getDescription().toCharArray(); //Description of placed tile
                     int tileNum = storage.get(i).getTileNumber(); //Tile number of placed tile
                     int r = storage.get(i).getRotateValue(); //Rotate value of placed tile
-                    
-                    
+                                
                     String newDescription = ""+description[0]+description[1]+description[2]+description[3]+"-0-0-"+description[9]+"-00000";
                     URL imageNew = this.getClass().getClassLoader().getResource("Images"+r+"/"+"tile"+tileNum+"-"+newDescription+".png");
                     image = new ImageIcon(imageNew);
@@ -3016,15 +3029,14 @@ public class GameGUI extends javax.swing.JFrame {
             
             //Store the special tile indicating which side has already been checked for a meeple
             specialTiles[row][col] = new specialTile(currentTile.getImage(),currentTile.getTileNumber(),false,false,false,true);
-            
-            
+                      
             //Determine if the city tile contains a shield
             if(description[9] == '1'){
                 totalShields++;
             }
         }
         
-        //Set current tile to visited
+        //Mark current tile to visited
         visited[row][col] = true;
         
         //Add 1 to to totalCityPieces since orginal tile has a city
@@ -3366,8 +3378,7 @@ public class GameGUI extends javax.swing.JFrame {
                     description = image.getDescription().toCharArray(); //Description of placed tile
                     int tileNum = storage.get(i).getTileNumber(); //Tile number of placed tile
                     int r = storage.get(i).getRotateValue(); //Rotate value of placed tile
-                    
-                    
+                                       
                     String newDescription = ""+description[0]+description[1]+description[2]+description[3]+"-0-0-"+description[9]+"-00000";
                     URL imageNew = this.getClass().getClassLoader().getResource("Images"+r+"/"+"tile"+tileNum+"-"+newDescription+".png");
                     image = new ImageIcon(imageNew);
@@ -3403,8 +3414,7 @@ public class GameGUI extends javax.swing.JFrame {
                     description = image.getDescription().toCharArray(); //Description of placed tile
                     int tileNum = storage.get(i).getTileNumber(); //Tile number of placed tile
                     int r = storage.get(i).getRotateValue(); //Rotate value of placed tile
-                    
-                    
+                                        
                     String newDescription = ""+description[0]+description[1]+description[2]+description[3]+"-0-0-"+description[9]+"-00000";
                     URL imageNew = this.getClass().getClassLoader().getResource("Images"+r+"/"+"tile"+tileNum+"-"+newDescription+".png");
                     image = new ImageIcon(imageNew);
@@ -3513,7 +3523,7 @@ public class GameGUI extends javax.swing.JFrame {
         int originalRow = row; //Row value of original tile
         int originalColumn = col; //Column value of original tile
         
-        //Set current tile to visited
+        //Mark current tile as visited
         visited[row][col] = true;
         
         //Check original tile for meeple
@@ -3581,6 +3591,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(topTile);
                 }
+                
+                //Update row
                 row = row - 1;
             }
             
@@ -3618,6 +3630,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(rightTile);
                 }
+                
+                //Update column
                 col = col + 1;
             }
             
@@ -3655,6 +3669,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(bottomTile);
                 }
+                
+                //Update row
                 row = row + 1;
             }
             
@@ -3692,6 +3708,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(leftTile);
                 }
+                
+                //Update column
                 col = col - 1;
             }else{
                 //Break out of a loop
@@ -3779,7 +3797,7 @@ public class GameGUI extends javax.swing.JFrame {
                     }
                 }
             }
-            visited[row][col] = true;
+            visited[row][col] = true; //Mark current tile as visited
             currentTile = board[row][col]; //Current tile
             topTile = board[row-1][col]; //Tile above current tile
             rightTile = board[row][col+1]; //Tile to right of current tile
@@ -3853,6 +3871,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(topTile);
                 }
+                
+                //Update row
                 row = row - 1;
             }
             
@@ -3890,6 +3910,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(rightTile);
                 }
+                
+                //Update column
                 col = col + 1;
             }
             
@@ -3927,6 +3949,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(bottomTile);
                 }
+                
+                //Update row
                 row = row + 1;
             }
             
@@ -3964,6 +3988,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(leftTile);
                 }
+                
+                //Update column
                 col = col - 1;
             }else{
                 //Break out of a loop
@@ -4051,7 +4077,7 @@ public class GameGUI extends javax.swing.JFrame {
                     }
                 }
             }
-            visited[row][col] = true;
+            visited[row][col] = true; //Mark current tile as visited
             currentTile = board[row][col]; //Current tile
             topTile = board[row-1][col]; //Tile above current tile
             rightTile = board[row][col+1]; //Tile to right of current tile
@@ -4094,8 +4120,7 @@ public class GameGUI extends javax.swing.JFrame {
                     description = image.getDescription().toCharArray(); //Description of placed tile
                     int tileNum = storage.get(i).getTileNumber(); //Tile number of placed tile
                     int r = storage.get(i).getRotateValue(); //Rotate value of placed tile
-                    
-                    
+                                       
                     String newDescription = ""+description[0]+description[1]+description[2]+description[3]+"-0-0-"+description[9]+"-00000";
                     URL imageNew = this.getClass().getClassLoader().getResource("Images"+r+"/"+"tile"+tileNum+"-"+newDescription+".png");
                     image = new ImageIcon(imageNew);
@@ -4131,8 +4156,7 @@ public class GameGUI extends javax.swing.JFrame {
                     description = image.getDescription().toCharArray(); //Description of placed tile
                     int tileNum = storage.get(i).getTileNumber(); //Tile number of placed tile
                     int r = storage.get(i).getRotateValue(); //Rotate value of placed tile
-                    
-                    
+                                       
                     String newDescription = ""+description[0]+description[1]+description[2]+description[3]+"-0-0-"+description[9]+"-00000";
                     URL imageNew = this.getClass().getClassLoader().getResource("Images"+r+"/"+"tile"+tileNum+"-"+newDescription+".png");
                     image = new ImageIcon(imageNew);
@@ -4331,6 +4355,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(topTile);
                 }
+                
+                //Update row
                 row = row - 1;
             }
             
@@ -4368,6 +4394,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(rightTile);
                 }
+                
+                //Update column
                 col = col + 1;
             }
             
@@ -4405,6 +4433,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(bottomTile);
                 }
+                
+                //Update row
                 row = row + 1;
             }
             
@@ -4442,6 +4472,8 @@ public class GameGUI extends javax.swing.JFrame {
                     //Add tile to storage container since it contains a meeple and needs replaced if road completed
                     storage.add(leftTile);
                 }
+                
+                //Update column
                 col = col - 1;
             }else{
                 //Break out of a loop
@@ -4529,7 +4561,7 @@ public class GameGUI extends javax.swing.JFrame {
                     }
                 }
             }
-            visited[row][col] = true;
+            visited[row][col] = true; //Mark current tile as visited
             currentTile = board[row][col]; //Current tile
             topTile = board[row-1][col]; //Tile above current tile
             rightTile = board[row][col+1]; //Tile to right of current tile
@@ -4572,8 +4604,7 @@ public class GameGUI extends javax.swing.JFrame {
                     description = image.getDescription().toCharArray(); //Description of placed tile
                     int tileNum = storage.get(i).getTileNumber(); //Tile number of placed tile
                     int r = storage.get(i).getRotateValue(); //Rotate value of placed tile
-                    
-                    
+                                        
                     String newDescription = ""+description[0]+description[1]+description[2]+description[3]+"-0-0-"+description[9]+"-00000";
                     URL imageNew = this.getClass().getClassLoader().getResource("Images"+r+"/"+"tile"+tileNum+"-"+newDescription+".png");
                     image = new ImageIcon(imageNew);
@@ -4609,8 +4640,7 @@ public class GameGUI extends javax.swing.JFrame {
                     description = image.getDescription().toCharArray(); //Description of placed tile
                     int tileNum = storage.get(i).getTileNumber(); //Tile number of placed tile
                     int r = storage.get(i).getRotateValue(); //Rotate value of placed tile
-                    
-                    
+                                        
                     String newDescription = ""+description[0]+description[1]+description[2]+description[3]+"-0-0-"+description[9]+"-00000";
                     URL imageNew = this.getClass().getClassLoader().getResource("Images"+r+"/"+"tile"+tileNum+"-"+newDescription+".png");
                     image = new ImageIcon(imageNew);
@@ -4703,8 +4733,8 @@ public class GameGUI extends javax.swing.JFrame {
     * Method to calculate the score of a newly placed tile containing a cloister
     ***************************************************************************/
     public boolean scoreCloister(placedTile image, boolean endGame){
-        int row = image.getXCoord();
-        int col = image.getYCoord();
+        int row = image.getXCoord(); //Tile row
+        int col = image.getYCoord(); //Tile column
         ImageIcon topTile = board[row-1][col].getImage(); //Tile top
         ImageIcon topLeftTile = board[row-1][col-1].getImage(); //Tile top left
         ImageIcon topRightTile = board[row-1][col+1].getImage(); //Tile top right
@@ -4791,8 +4821,8 @@ public class GameGUI extends javax.swing.JFrame {
     * Method to calculate the possible score of a newly placed tile containing a cloister
     *************************************************************************************/
     public int scoreCloisterTest(int r, int c, ImageIcon image){
-        int row = r;
-        int col = c;
+        int row = r; //Tile row
+        int col = c; //Tile column
         ImageIcon topTile = board[row-1][col].getImage(); //Tile top
         ImageIcon topLeftTile = board[row-1][col-1].getImage(); //Tile top left
         ImageIcon topRightTile = board[row-1][col+1].getImage(); //Tile top right
@@ -5415,7 +5445,7 @@ public class GameGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Launch the frame containingt the games rules when the rules button is pressed
+    //Launch the frame containing the game's rules when the rules button is pressed
     private void jButtonRulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRulesActionPerformed
         launchRulesFrame();
     }//GEN-LAST:event_jButtonRulesActionPerformed
@@ -5425,10 +5455,12 @@ public class GameGUI extends javax.swing.JFrame {
         newGame(); 
     }//GEN-LAST:event_jButtonNewGameActionPerformed
 
+    //Redraw a tile when there are no valid tile placement locations
     private void jButtonRedrawTileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRedrawTileActionPerformed
         redrawTile();
     }//GEN-LAST:event_jButtonRedrawTileActionPerformed
 
+    //Toggle on/off valid tile placement indicators
     private void jCheckBoxAutoShowValidTilePlacementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxAutoShowValidTilePlacementActionPerformed
         if(jCheckBoxAutoShowValidTilePlacement.isSelected()){
            showValidTilePlacementLocations = true;
@@ -5444,6 +5476,7 @@ public class GameGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jCheckBoxAutoShowValidTilePlacementActionPerformed
 
+    //Launch the frame containing the game's controls when the controls button is pressed
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         launchControlsFrame();
     }//GEN-LAST:event_jButton2ActionPerformed

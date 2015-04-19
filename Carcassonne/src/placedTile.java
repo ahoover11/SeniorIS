@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author Andy
+ * @author Andy Hoover, The College of Wooster
  */
 public class placedTile {
     

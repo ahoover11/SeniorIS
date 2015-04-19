@@ -10,20 +10,17 @@ import java.net.URL;
 
 /**
  *
- * @author Andy
+ * @author Andy Hoover, The College of Wooster
  */
 public class PlayerSelectFrame extends javax.swing.JFrame {
     
-    private String player1Type = "Human";
-    private String player2Type = "Human";
+    private String player1Type = "Human"; //Default player 1 type (Human)
+    private String player2Type = "Human"; //Default player 1 type (Human)
     private boolean player1BotAutoMove = false;
     private boolean player2BotAutoMove = false;
     private ImageIcon meeple1; //Image of player 1's meeple
     private ImageIcon meeple2; //Image of player 2's meeple
 
-    /**
-     * Creates new form PlayerSelect
-     */
     public PlayerSelectFrame() {
         initComponents();
     }
@@ -326,6 +323,7 @@ public class PlayerSelectFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Start the game when the start game button is clicked
     private void jButtonStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartGameActionPerformed
         GameGUI frame = new GameGUI(jTextFieldPlayer1Name.getText(),jTextFieldPlayer2Name.getText(),player1Type,player2Type,player1BotAutoMove,player2BotAutoMove);
         frame.setLocationRelativeTo(null);

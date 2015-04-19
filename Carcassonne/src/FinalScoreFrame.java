@@ -9,16 +9,13 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author Andy
+ * @author Andy Hoover, The College of Wooster
  */
 public class FinalScoreFrame extends javax.swing.JFrame {
     
     private ImageIcon meeple1; //Image of player 1's meeple
     private ImageIcon meeple2; //Image of player 2's meeple
 
-    /**
-     * Creates new form FinalScoreFrame
-     */
     public FinalScoreFrame(String namePlayer1, String namePlayer2, String scorePlayer1, String scorePlayer2, String statusPlayer1, String statusPlayer2, 
                            String typePlayer1, String typePlayer2) 
     {
@@ -269,6 +266,7 @@ public class FinalScoreFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Start a new game when the new game button is clicked
     private void jButtonNewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewGameActionPerformed
         PlayerSelectFrame frame = new PlayerSelectFrame();
         frame.setLocationRelativeTo(null);
